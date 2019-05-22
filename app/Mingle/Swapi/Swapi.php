@@ -37,4 +37,9 @@
         {
             return json_decode($response->getBody()->getContents(), true);
         }
+
+        protected function generateCacheKey($key)
+        {
+            dd(self::CACHE_KEY);
+        }
     }
