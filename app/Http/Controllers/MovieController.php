@@ -4,7 +4,6 @@
 
     use App\Mingle\Swapi\Characters;
     use App\Mingle\Swapi\Movies;
-    use Illuminate\Support\Facades\Log;
 
     class MovieController extends Controller
     {
@@ -24,13 +23,7 @@
                 $_movie = $swapiMovie->get($movie);
 
                 // load the characters of a movie
-                $characters = array_map(function ($character) use ($swapiCharacter) {
-                    try {
-                        return $swapiCharacter->get($character);
-                    } catch (\Exception $exception) {
-                        Log::debug($exception->getMessage());
-                    }
-                }, $_movie['characters']);
+                $characters = $swapiCharacter->load($movie, $_movie['characters']);
 
                 return $this->response->ok("List of all characters in {$movie}", [
                     'movie'   => $_movie,

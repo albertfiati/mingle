@@ -22,7 +22,7 @@
         public function fetch()
         {
             // return cached data if available else make new query
-            return cache()->remember(self::CACHE_KEY, Carbon::now()->addDays(10), function () {
+            return cache()->remember(self::CACHE_KEY, Carbon::now()->addMinutes(env('CACHE_TTL')), function () {
                 try {
                     $response = $this->client->get($this->base_url . $this->endpoint);
 
