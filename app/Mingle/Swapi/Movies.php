@@ -30,13 +30,21 @@
                         $response = $this->parseResponseBody($response);
 
                         // set slug for each movie and set the year of release
-                        $response['results'] = collect(array_map(function ($movie) {
+                        $response['results'] = array_map(function ($movie) {
                             $movie['slug'] = Str::slug($movie['title']);
                             $movie['year_of_release'] = substr($movie['release_date'], 0, 4);
                             return $movie;
-                        }, $response['results']))
-                            ->sortBy('release_data')
-                            ->all();
+                        }, $response['results']);
+
+                        $collection = collect($response['results']);
+                        $sorted = $collection->sortBy('release_date');
+                        $newMovieArray = [];
+
+                        foreach ($sorted->all() as $key => $value) {
+                            $newMovieArray[] = $value;
+                        }
+
+                        $response['results'] = $newMovieArray;
 
                         return $response;
                     }
